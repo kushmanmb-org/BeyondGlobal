@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos Blockchain Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .status {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .status-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .status-text {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .button.secondary {
+            background: #764ba2;
+        }
+        
+        .button.secondary:hover {
+            background: #653d8a;
+        }
+        
+        .account-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            display: none;
+        }
+        
+        .account-display.active {
+            display: block;
+        }
+        
+        .feature-list {
+            list-style: none;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .feature-item {
+            padding: 12px 0;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-item::before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .error {
+            background: #ffe0e0;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Kairos</h1>
+        <p class="subtitle">Blockchain Platform with MetaMask Smart Accounts</p>
+        
+        <div class="status">
+            <div class="status-title">Platform Status</div>
+            <div class="status-text" id="status-text">Ready to connect</div>
+        </div>
+        
+        <div class="error" id="error-message"></div>
+        
+        <button class="button" id="connect-btn" onclick="handleConnect()">
+            Connect MetaMask Wallet
+        </button>
+        
+        <button class="button secondary" id="disconnect-btn" onclick="handleDisconnect()" style="display: none;">
+            Disconnect Wallet
+        </button>
+        
+        <div class="account-display" id="account-display">
+            <strong>Connected Account:</strong><br>
+            <span id="account-address"></span>
+        </div>
+        
+        <ul class="feature-list">
+            <li class="feature-item">MetaMask Smart Accounts Integration</li>
+            <li class="feature-item">Multi-Chain Support</li>
+            <li class="feature-item">Transaction Monitoring</li>
+            <li class="feature-item">Etherscan API Integration</li>
+        </ul>
+    </div>
+    
+    <script src="index.js"></script>
+    <script>
+        // Initialize app on load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Kairos Platform loaded');
+            
+            if (typeof KairosFrontend !== 'undefined') {
+                KairosFrontend.initializeApp();
+            }
+        });
+        
+        // Handle wallet connection
+        async function handleConnect() {
+            const statusText = document.getElementById('status-text');
+            const errorDiv = document.getElementById('error-message');
+            const connectBtn = document.getElementById('connect-btn');
+            const disconnectBtn = document.getElementById('disconnect-btn');
+            const accountDisplay = document.getElementById('account-display');
+            const accountAddress = document.getElementById('account-address');
+            
+            errorDiv.classList.remove('active');
+            statusText.textContent = 'Connecting to MetaMask...';
+            
+            if (typeof KairosFrontend !== 'undefined') {
+                const result = await KairosFrontend.connectWallet();
+                
+                if (result.success) {
+                    statusText.textContent = 'Connected successfully!';
+                    accountAddress.textContent = result.account;
+                    accountDisplay.classList.add('active');
+                    connectBtn.style.display = 'none';
+                    disconnectBtn.style.display = 'block';
+                } else {
+                    statusText.textContent = 'Connection failed';
+                    errorDiv.textContent = result.error || 'Failed to connect to MetaMask';
+                    errorDiv.classList.add('active');
+                }
+            } else {
+                statusText.textContent = 'Frontend module not loaded';
+                errorDiv.textContent = 'Please ensure all scripts are loaded correctly';
+                errorDiv.classList.add('active');
+            }
+        }
+        
+        // Handle wallet disconnection
+        function handleDisconnect() {
+            const statusText = document.getElementById('status-text');
+            const connectBtn = document.getElementById('connect-btn');
+            const disconnectBtn = document.getElementById('disconnect-btn');
+            const accountDisplay = document.getElementById('account-display');
+            
+            if (typeof KairosFrontend !== 'undefined') {
+                KairosFrontend.disconnectWallet();
+            }
+            
+            statusText.textContent = 'Disconnected - Ready to connect';
+            accountDisplay.classList.remove('active');
+            connectBtn.style.display = 'block';
+            disconnectBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

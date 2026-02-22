@@ -1,4 +1,98 @@
-# sturdy-funicular
+# BeyondGlobal - Kairos Blockchain Platform
+
+A comprehensive blockchain integration platform featuring MetaMask Smart Accounts Kit, multi-chain support, and enterprise-grade deployment tools.
+
+## 🌟 Overview
+
+BeyondGlobal (Kairos) is inspired by the [CosmicBlockchain/Kairos](https://github.com/CosmicBlockchain/Kairos) repository and provides a structured approach to blockchain application development with seamless MetaMask integration.
+
+## 📁 Repository Structure
+
+```
+BeyondGlobal/
+├── src/
+│   ├── blockchain/         # Blockchain integration code
+│   │   ├── index.js       # Core blockchain functionality
+│   │   ├── etherscan-integration.js  # Etherscan API integration
+│   │   └── smart-accounts.js        # Smart account management
+│   ├── frontend/          # Frontend UI/UX and logic
+│   │   ├── index.html     # Main web interface
+│   │   └── index.js       # Frontend logic
+│   └── deployment/        # Deployment scripts and configurations
+│       └── index.js       # Deployment automation
+├── docs/
+│   ├── roadmap.md        # Project roadmap
+│   └── requirements.md   # System requirements
+├── cosmic_blockchain_deploy/  # Legacy deployment files
+├── LICENSE               # MIT License
+└── README.md            # This file
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 16+ (18+ recommended)
+- Yarn or npm
+- MetaMask browser extension
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Kushmanmb/BeyondGlobal.git
+cd BeyondGlobal
+
+# Install dependencies
+yarn install
+# or
+npm install
+
+# Run the application
+yarn start
+# or
+npm start
+```
+
+### Frontend Demo
+
+Open `src/frontend/index.html` in a browser with MetaMask installed to see the interactive demo.
+
+## 📚 Documentation
+
+- **[Roadmap](docs/roadmap.md)**: Project timeline and planned features
+- **[Requirements](docs/requirements.md)**: Detailed system requirements and dependencies
+- **[Etherscan API](ETHERSCAN_API.md)**: Etherscan API integration guide
+
+## 🔗 Related Projects
+
+**Kairos Repository (Inspiration):**
+- Repository: https://github.com/CosmicBlockchain/Kairos
+- This project follows the structure and principles outlined in the Kairos repository
+
+## 📖 Features
+
+- ✅ MetaMask Smart Accounts Kit integration
+- ✅ Etherscan API integration for transaction verification
+- ✅ Multi-chain support (Ethereum, Polygon, Sepolia)
+- ✅ Frontend interface for wallet connection
+- ✅ Smart account management
+- ✅ Deployment automation scripts
+- 🔄 Transaction batching (coming soon)
+- 🔄 Gasless transactions (coming soon)
+
+## 🛠️ Technology Stack
+
+- **Blockchain**: Ethereum, EVM-compatible chains
+- **Integration**: @metamask/smart-accounts-kit
+- **API**: Etherscan API v2
+- **Frontend**: HTML5, JavaScript (ES6+)
+- **Backend**: Node.js
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
 
 ## Advanced Git Commands Guide
 
