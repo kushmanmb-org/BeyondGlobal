@@ -213,4 +213,4 @@ For issues related to:
 
 ---
 
-*Last Updated: February 2026*
+*Last Updated: February 22, 2026*

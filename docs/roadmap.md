@@ -91,4 +91,4 @@ For questions, issues, or suggestions, please open an issue on GitHub or reach o
 
 ---
 
-*Last Updated: February 2026*
+*Last Updated: February 22, 2026*

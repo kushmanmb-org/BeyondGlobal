@@ -7,21 +7,50 @@
 
 /**
  * Smart Account Configuration
+ * 
+ * IMPORTANT: These are placeholder addresses and MUST be configured before production use.
+ * Set these values in your environment configuration or .env file:
+ * - FACTORY_ADDRESS: Address of the smart account factory contract
+ * - ENTRY_POINT_ADDRESS: Address of the ERC-4337 entry point contract
+ * - BUNDLER_URL: URL of the bundler service endpoint
  */
 const SMART_ACCOUNT_CONFIG = {
-  factoryAddress: '0x...', // Placeholder for smart account factory
-  entryPointAddress: '0x...', // Placeholder for ERC-4337 entry point
-  bundlerUrl: 'https://bundler.example.com' // Placeholder for bundler endpoint
+  factoryAddress: process.env.FACTORY_ADDRESS || '0x0000000000000000000000000000000000000000', // ⚠️ CONFIGURE BEFORE USE
+  entryPointAddress: process.env.ENTRY_POINT_ADDRESS || '0x0000000000000000000000000000000000000000', // ⚠️ CONFIGURE BEFORE USE
+  bundlerUrl: process.env.BUNDLER_URL || 'https://bundler.example.com' // ⚠️ CONFIGURE BEFORE USE
 };
+
+/**
+ * Validate smart account configuration
+ */
+function validateConfig() {
+  const isInvalidAddress = (addr) => !addr || addr === '0x0000000000000000000000000000000000000000';
+  
+  if (isInvalidAddress(SMART_ACCOUNT_CONFIG.factoryAddress) || 
+      isInvalidAddress(SMART_ACCOUNT_CONFIG.entryPointAddress) ||
+      SMART_ACCOUNT_CONFIG.bundlerUrl === 'https://bundler.example.com') {
+    throw new Error(
+      'Smart account configuration is not properly set. Please configure:\n' +
+      '- FACTORY_ADDRESS: Smart account factory contract address\n' +
+      '- ENTRY_POINT_ADDRESS: ERC-4337 entry point contract address\n' +
+      '- BUNDLER_URL: Bundler service endpoint URL'
+    );
+  }
+}
 
 /**
  * Create a new smart account
  * 
  * @param {string} ownerAddress - Address of the account owner
+ * @param {boolean} skipValidation - Skip configuration validation (for testing)
  * @returns {Promise<Object>} Smart account details
  */
-async function createSmartAccount(ownerAddress) {
+async function createSmartAccount(ownerAddress, skipValidation = false) {
   try {
+    if (!skipValidation) {
+      validateConfig();
+    }
+    
     console.log(`Creating smart account for owner: ${ownerAddress}`);
     
     // Placeholder for actual smart account creation logic
