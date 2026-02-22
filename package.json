@@ -12,9 +12,11 @@
   "author": "copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
+    "start": "node infrastructure.js",
     "query-etherscan": "node index.js",
-    "test": "node test.js"
+    "test": "node test.js && node infrastructure-test.js",
+    "test:infrastructure": "node infrastructure-test.js",
+    "test:etherscan": "node test.js"
   },
   "dependencies": {
     "@metamask/smart-accounts-kit": "^0.3.0"
