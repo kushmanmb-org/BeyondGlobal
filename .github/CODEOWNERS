@@ -1,0 +1,82 @@
+# CODEOWNERS - Defines individuals or teams responsible for code in this repository
+#
+# This file is used for:
+# 1. Automatically assigning reviewers to pull requests
+# 2. Ensuring appropriate maintainers review changes to critical files
+# 3. Enforcing code ownership policies
+#
+# Format: <file-pattern> <owner1> <owner2> ...
+# Owners can be: @username, @org/team-name, or email@domain.com
+#
+# More specific patterns override more general patterns
+# Last matching pattern takes precedence
+
+# ==============================================================================
+# Default Ownership
+# ==============================================================================
+
+# Repository owner is default owner for everything
+* @Kushmanmb
+
+# ==============================================================================
+# Governance and Policy Files
+# ==============================================================================
+
+# Security and governance policies require owner approval
+/POLICY.md @Kushmanmb
+/OWNERSHIP.md @Kushmanmb
+/LICENSE @Kushmanmb
+/.github/branch-protection.md @Kushmanmb
+/CODEOWNERS @Kushmanmb
+
+# ==============================================================================
+# Security and Configuration
+# ==============================================================================
+
+# Security-sensitive files require careful review
+/.github/workflows/ @Kushmanmb
+/.gitignore @Kushmanmb
+/package.json @Kushmanmb
+/yarn.lock @Kushmanmb
+
+# ==============================================================================
+# Core Application Code
+# ==============================================================================
+
+# Main application code
+/index.js @Kushmanmb
+/test.js @Kushmanmb
+
+# ==============================================================================
+# Documentation
+# ==============================================================================
+
+# Documentation can be reviewed by owner or community maintainers
+/README.md @Kushmanmb
+/ETHERSCAN_API.md @Kushmanmb
+/*.md @Kushmanmb
+
+# ==============================================================================
+# Bot Configuration
+# ==============================================================================
+
+# Copilot instructions - requires owner approval
+/.github/copilot-instructions.md @Kushmanmb
+
+# ==============================================================================
+# Future: Add Additional Owners
+# ==============================================================================
+
+# As the project grows, add specific owners for different areas:
+#
+# Example for frontend (when applicable):
+# /src/frontend/ @frontend-team-lead @Kushmanmb
+#
+# Example for backend (when applicable):
+# /src/backend/ @backend-team-lead @Kushmanmb
+#
+# Example for smart contracts (when applicable):
+# /contracts/ @smart-contract-expert @Kushmanmb
+#
+# Example for CI/CD:
+# /.github/workflows/ @devops-lead @Kushmanmb

@@ -1,6 +1,123 @@
-# sturdy-funicular
+# BeyondGlobal - MetaMask Smart Accounts Kit Demo
 
-## Advanced Git Commands Guide
+> A demonstration project for MetaMask Smart Accounts Kit with blockchain integration and advanced governance.
+
+[![Code Review](https://github.com/Kushmanmb/BeyondGlobal/actions/workflows/code-review.yml/badge.svg)](https://github.com/Kushmanmb/BeyondGlobal/actions/workflows/code-review.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+## 🤖 Automated Collaboration
+
+This repository leverages **Kairos bot** and **GitHub Copilot** working simultaneously to ensure:
+- ✅ Code efficiency and correctness
+- 🔒 Security best practices
+- 📝 Automated code reviews
+- 🛡️ Vulnerability detection
+
+## 📋 Table of Contents
+
+- [Project Overview](#project-overview)
+- [Security & Governance](#security--governance)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [Advanced Git Commands](#advanced-git-commands-guide)
+
+## 🎯 Project Overview
+
+This project demonstrates the integration of MetaMask Smart Accounts Kit with Etherscan API, showcasing secure blockchain interactions and smart account management.
+
+## 🔒 Security & Governance
+
+We take security and code quality seriously. This repository implements comprehensive governance policies:
+
+### 📜 Key Documents
+
+- **[POLICY.md](./POLICY.md)** - Security policies, code review requirements, and key management
+- **[OWNERSHIP.md](./OWNERSHIP.md)** - Repository ownership structure and maintainer responsibilities
+- **[LICENSE](./LICENSE)** - MIT License with terms for configuration and upgrades
+- **[Branch Protection Rules](./.github/branch-protection.md)** - Branch protection and merge requirements
+
+### 🛡️ Security Features
+
+- **Automated Security Scanning**: All PRs are scanned for vulnerabilities
+- **Dependency Monitoring**: Regular checks for insecure dependencies
+- **Secret Detection**: Prevents accidental commit of API keys and secrets
+- **Code Review**: Required reviews by Kairos bot, Copilot, and human maintainers
+
+### 🔑 Key Management
+
+**Never commit sensitive data!** All API keys, private keys, and secrets must be:
+- Stored in `.env` files (git-ignored)
+- Managed via GitHub Secrets for CI/CD
+- Rotated regularly (every 90 days)
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18 or higher
+- Yarn package manager
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Kushmanmb/BeyondGlobal.git
+cd BeyondGlobal
+
+# Install dependencies
+yarn install
+
+# Run tests
+yarn test
+
+# Query Etherscan API
+yarn query-etherscan
+```
+
+### Environment Setup
+
+Create a `.env` file for local development:
+
+```bash
+# .env (DO NOT COMMIT THIS FILE)
+ETHERSCAN_API_KEY=your_api_key_here
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow our governance process:
+
+1. **Read the Documentation**
+   - Review [POLICY.md](./POLICY.md) for security requirements
+   - Review [OWNERSHIP.md](./OWNERSHIP.md) for contribution guidelines
+
+2. **Submit a Pull Request**
+   - All changes must go through PR review
+   - Never commit directly to protected branches
+   - Ensure all automated checks pass
+
+3. **Code Review Process**
+   ```
+   Developer → PR → Automated Checks → Bot Review → Human Review → Merge
+   ```
+
+4. **Required Checks**
+   - ✅ All tests pass
+   - ✅ No security vulnerabilities
+   - ✅ Code quality standards met
+   - ✅ Documentation updated
+   - ✅ At least 1 maintainer approval
+
+### Branch Protection
+
+Protected branches (`main`, `production`, `release/*`) require:
+- Pull request reviews (minimum 1 approval)
+- Status checks to pass
+- Linear history (no merge commits)
+- No force pushes
+- CODEOWNERS approval for sensitive files
+
+## 📚 Advanced Git Commands Guide
 
 This guide covers advanced Git commands that are essential for effective version control management. Each command includes detailed explanations and practical examples.
 

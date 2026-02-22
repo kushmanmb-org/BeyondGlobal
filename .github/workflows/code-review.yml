@@ -1,0 +1,319 @@
+name: Code Review and Security Checks
+
+# This workflow provides automated checks to support Kairos bot and Copilot
+# working together to ensure code quality and security
+
+on:
+  pull_request:
+    branches: [ main, production, 'release/*' ]
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Ensure only one workflow runs at a time per PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # Dependency Security Scan
+  # ============================================================================
+  dependency-security:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run npm audit
+        run: |
+          echo "🔍 Checking for security vulnerabilities in dependencies..."
+          yarn audit --json > audit-results.json || true
+          
+          # Check for high or critical vulnerabilities
+          HIGH_VULNS=$(cat audit-results.json | grep -o '"severity":"high"' | wc -l || echo "0")
+          CRITICAL_VULNS=$(cat audit-results.json | grep -o '"severity":"critical"' | wc -l || echo "0")
+          
+          echo "High vulnerabilities: $HIGH_VULNS"
+          echo "Critical vulnerabilities: $CRITICAL_VULNS"
+          
+          if [ "$CRITICAL_VULNS" -gt "0" ] || [ "$HIGH_VULNS" -gt "0" ]; then
+            echo "❌ Security vulnerabilities found! Please review and fix."
+            cat audit-results.json
+            exit 1
+          else
+            echo "✅ No high or critical security vulnerabilities found"
+          fi
+
+      - name: Upload audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-results
+          path: audit-results.json
+          retention-days: 30
+
+  # ============================================================================
+  # Code Quality Checks
+  # ============================================================================
+  code-quality:
+    name: Code Quality and Linting
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Check for secrets in code
+        run: |
+          echo "🔍 Scanning for accidentally committed secrets..."
+          
+          # Check for common secret patterns
+          if grep -r -i -E "(api[_-]?key|apikey|secret[_-]?key|password|token|private[_-]?key)" \
+             --include="*.js" --include="*.json" --exclude="package-lock.json" --exclude="yarn.lock" . | \
+             grep -v -E "(// |/\*|\*|#|test|example|demo|CODEOWNERS)" ; then
+            echo "❌ Potential secrets found in code! Please review."
+            exit 1
+          else
+            echo "✅ No obvious secrets detected in code"
+          fi
+
+      - name: Validate JSON files
+        run: |
+          echo "🔍 Validating JSON files..."
+          find . -name "*.json" -not -path "./node_modules/*" -exec sh -c '
+            for file; do
+              if ! python3 -m json.tool "$file" > /dev/null 2>&1; then
+                echo "❌ Invalid JSON: $file"
+                exit 1
+              fi
+            done
+          ' sh {} +
+          echo "✅ All JSON files are valid"
+
+  # ============================================================================
+  # Build and Test
+  # ============================================================================
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run tests
+        run: |
+          echo "🧪 Running tests..."
+          yarn test
+          echo "✅ All tests passed"
+
+      - name: Test main script
+        run: |
+          echo "🔍 Testing main script execution..."
+          # Test that the script can be loaded without errors
+          node -e "require('./index.js'); console.log('✅ Main script loads successfully')"
+
+  # ============================================================================
+  # Policy Compliance Check
+  # ============================================================================
+  policy-compliance:
+    name: Policy Compliance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for checking all files
+
+      - name: Check required files exist
+        run: |
+          echo "🔍 Checking for required governance files..."
+          
+          REQUIRED_FILES=(
+            "POLICY.md"
+            "OWNERSHIP.md"
+            "LICENSE"
+            ".github/branch-protection.md"
+            ".github/CODEOWNERS"
+            ".gitignore"
+          )
+          
+          MISSING_FILES=()
+          for file in "${REQUIRED_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              MISSING_FILES+=("$file")
+            fi
+          done
+          
+          if [ ${#MISSING_FILES[@]} -gt 0 ]; then
+            echo "❌ Missing required files:"
+            printf '%s\n' "${MISSING_FILES[@]}"
+            exit 1
+          else
+            echo "✅ All required governance files present"
+          fi
+
+      - name: Check .gitignore for sensitive files
+        run: |
+          echo "🔍 Checking .gitignore for sensitive file patterns..."
+          
+          REQUIRED_PATTERNS=(
+            ".env"
+            "node_modules"
+            "*.log"
+          )
+          
+          MISSING_PATTERNS=()
+          for pattern in "${REQUIRED_PATTERNS[@]}"; do
+            if ! grep -q "$pattern" .gitignore; then
+              MISSING_PATTERNS+=("$pattern")
+            fi
+          done
+          
+          if [ ${#MISSING_PATTERNS[@]} -gt 0 ]; then
+            echo "⚠️  Warning: .gitignore missing recommended patterns:"
+            printf '%s\n' "${MISSING_PATTERNS[@]}"
+          else
+            echo "✅ .gitignore contains required patterns"
+          fi
+
+      - name: Verify no committed secrets
+        run: |
+          echo "🔍 Checking for .env files in git history..."
+          
+          if git log --all --full-history -- "*.env" | grep -q "commit"; then
+            echo "❌ Warning: .env files found in git history!"
+            echo "Consider using git-filter-repo to remove them"
+            # Don't fail the build, just warn
+          else
+            echo "✅ No .env files found in git history"
+          fi
+
+  # ============================================================================
+  # Documentation Check
+  # ============================================================================
+  documentation:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check README.md
+        run: |
+          echo "🔍 Checking README.md..."
+          
+          if [ ! -f "README.md" ]; then
+            echo "❌ README.md not found"
+            exit 1
+          fi
+          
+          # Check for important sections
+          if ! grep -q "## " README.md; then
+            echo "⚠️  README.md has no section headers"
+          fi
+          
+          echo "✅ README.md exists"
+
+      - name: Check for broken markdown links
+        run: |
+          echo "🔍 Checking for broken internal markdown links..."
+          
+          # Find all markdown files
+          find . -name "*.md" -not -path "./node_modules/*" | while read file; do
+            # Extract markdown links [text](path)
+            grep -o '\[.*\]([^)]*)' "$file" | grep -o '([^)]*)' | tr -d '()' | while read link; do
+              # Skip external links
+              if [[ "$link" =~ ^https?:// ]]; then
+                continue
+              fi
+              
+              # Skip anchors
+              if [[ "$link" =~ ^# ]]; then
+                continue
+              fi
+              
+              # Check if file exists (relative to the markdown file's directory)
+              dir=$(dirname "$file")
+              if [ ! -f "$dir/$link" ] && [ ! -f "$link" ]; then
+                echo "⚠️  Broken link in $file: $link"
+              fi
+            done
+          done
+          
+          echo "✅ Markdown link check complete"
+
+  # ============================================================================
+  # Summary
+  # ============================================================================
+  summary:
+    name: Check Summary
+    runs-on: ubuntu-latest
+    needs: [dependency-security, code-quality, build-and-test, policy-compliance, documentation]
+    if: always()
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Check results
+        run: |
+          echo "📊 Workflow Summary"
+          echo "===================="
+          echo "Dependency Security: ${{ needs.dependency-security.result }}"
+          echo "Code Quality: ${{ needs.code-quality.result }}"
+          echo "Build and Test: ${{ needs.build-and-test.result }}"
+          echo "Policy Compliance: ${{ needs.policy-compliance.result }}"
+          echo "Documentation: ${{ needs.documentation.result }}"
+          
+          if [[ "${{ needs.dependency-security.result }}" == "failure" ]] || \
+             [[ "${{ needs.code-quality.result }}" == "failure" ]] || \
+             [[ "${{ needs.build-and-test.result }}" == "failure" ]] || \
+             [[ "${{ needs.policy-compliance.result }}" == "failure" ]]; then
+            echo "❌ Some checks failed. Please review and fix issues."
+            exit 1
+          else
+            echo "✅ All checks passed!"
+          fi
