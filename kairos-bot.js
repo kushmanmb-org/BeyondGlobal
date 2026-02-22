@@ -285,7 +285,7 @@ class KairosBot extends EventEmitter {
     return {
       growthRate: (baseGrowth + bridgeMultiplier).toFixed(4),
       scalability: 'high',
-      customerSatisfaction: '95%',
+      networkHealthScore: '95%',
       transactionThroughput: '50000 TPS'
     };
   }

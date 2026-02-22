@@ -45,11 +45,6 @@ class BeyondGlobalInfrastructure {
    * Set up event listeners for monitoring
    */
   setupEventListeners() {
-    // Bridge events
-    this.bridge.on = (event, handler) => {
-      // Event handler setup
-    };
-
     // Validator events
     this.validatorNetwork.on('consensusReached', (data) => {
       console.log(`Consensus reached for block ${data.blockHash}`);

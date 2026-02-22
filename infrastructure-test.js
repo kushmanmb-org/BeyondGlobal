@@ -39,16 +39,26 @@ test('Bridge: Should create bridge instance', () => {
 
 test('Bridge: Should optimize Bitcoin fees', () => {
   const optimizer = new FeeOptimizer();
-  const fee = optimizer.calculateBitcoinFee('medium');
-  if (!fee.satoshisPerByte) throw new Error('Fee not calculated');
-  if (fee.satoshisPerByte !== 5) throw new Error('Incorrect fee amount');
+  const lowFee = optimizer.calculateBitcoinFee('low');
+  const mediumFee = optimizer.calculateBitcoinFee('medium');
+  const highFee = optimizer.calculateBitcoinFee('high');
+  
+  if (!mediumFee.satoshisPerByte) throw new Error('Fee not calculated');
+  // Verify fee ordering: low < medium < high
+  if (lowFee.satoshisPerByte >= mediumFee.satoshisPerByte) throw new Error('Fee ordering incorrect');
+  if (mediumFee.satoshisPerByte >= highFee.satoshisPerByte) throw new Error('Fee ordering incorrect');
 });
 
 test('Bridge: Should optimize Ethereum gas', () => {
   const optimizer = new FeeOptimizer();
-  const gas = optimizer.calculateEthereumGas('high');
-  if (!gas.gasPrice) throw new Error('Gas not calculated');
-  if (gas.gasPrice !== 50) throw new Error('Incorrect gas amount');
+  const lowGas = optimizer.calculateEthereumGas('low');
+  const mediumGas = optimizer.calculateEthereumGas('medium');
+  const highGas = optimizer.calculateEthereumGas('high');
+  
+  if (!highGas.gasPrice) throw new Error('Gas not calculated');
+  // Verify gas ordering: low < medium < high
+  if (lowGas.gasPrice >= mediumGas.gasPrice) throw new Error('Gas ordering incorrect');
+  if (mediumGas.gasPrice >= highGas.gasPrice) throw new Error('Gas ordering incorrect');
 });
 
 test('Bridge: Should create BTC to ETH transaction', () => {

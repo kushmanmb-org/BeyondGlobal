@@ -340,7 +340,7 @@ MIT License - see LICENSE file for details
 
 For issues and questions:
 - GitHub Issues: https://github.com/Kushmanmb/BeyondGlobal/issues
-- Email: support@beyondglobal.example
+- Note: Update with your support email before production use
 
 ## 🗺 Roadmap
 

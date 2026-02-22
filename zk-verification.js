@@ -13,7 +13,7 @@ const ZK_CONFIG = {
   proofType: 'zkSNARK',
   curve: 'bn128',
   securityLevel: 128,
-  verificationTimeout: 5000 // milliseconds
+  verificationTimeout: 300000 // 5 minutes in milliseconds
 };
 
 /**
