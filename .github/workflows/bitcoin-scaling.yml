@@ -19,6 +19,8 @@ jobs:
   performance-baseline:
     name: Establish Performance Baseline
     runs-on: [self-hosted, bitcoin-validator]
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -62,6 +64,8 @@ jobs:
     name: Scale Test - Small (10 concurrent)
     runs-on: [self-hosted, bitcoin-validator]
     needs: performance-baseline
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -91,6 +95,8 @@ jobs:
     runs-on: [self-hosted, bitcoin-validator]
     needs: scale-test-small
     if: github.event.inputs.scale_level == 'medium' || github.event.inputs.scale_level == 'large' || github.event_name != 'workflow_dispatch'
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -123,6 +129,8 @@ jobs:
     runs-on: [self-hosted, bitcoin-validator]
     needs: scale-test-medium
     if: github.event.inputs.scale_level == 'large' || (github.event_name == 'schedule')
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -154,6 +162,8 @@ jobs:
     name: Bitcoin Unlimited Scaling Test
     runs-on: [self-hosted, bitcoin-validator]
     needs: performance-baseline
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code

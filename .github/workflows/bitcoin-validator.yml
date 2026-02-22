@@ -14,6 +14,8 @@ jobs:
   validate-bitcoin-integration:
     name: Validate Bitcoin Integration
     runs-on: [self-hosted, bitcoin-validator]
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -57,6 +59,8 @@ jobs:
     name: Scalability Test
     runs-on: [self-hosted, bitcoin-validator]
     needs: validate-bitcoin-integration
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code

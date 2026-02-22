@@ -11,6 +11,8 @@ jobs:
   categorize-work:
     name: Categorize Bitcoin-Related Work
     runs-on: [self-hosted, bitcoin-validator]
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -48,6 +50,8 @@ jobs:
     name: Validate Work Item
     runs-on: [self-hosted, bitcoin-validator]
     needs: categorize-work
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -76,6 +80,7 @@ jobs:
     name: Track Work Progress
     runs-on: [self-hosted, bitcoin-validator]
     needs: validate-work-item
+    permissions: {}
 
     steps:
       - name: Update work tracking
@@ -107,6 +112,7 @@ jobs:
     name: Manage Bitcoin Proposals
     runs-on: [self-hosted, bitcoin-validator]
     if: contains(github.event.issue.labels.*.name, 'proposal') || contains(github.event.pull_request.labels.*.name, 'proposal')
+    permissions: {}
 
     steps:
       - name: Process Bitcoin proposal

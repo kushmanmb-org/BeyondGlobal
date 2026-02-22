@@ -12,6 +12,8 @@ jobs:
     name: Validate Bitcoin Improvement Proposal
     runs-on: [self-hosted, bitcoin-validator]
     if: contains(github.event.issue.labels.*.name, 'BIP') || contains(github.event.pull_request.labels.*.name, 'BIP')
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
@@ -71,6 +73,8 @@ jobs:
     name: Automated BIP Review
     runs-on: [self-hosted, bitcoin-validator]
     needs: bip-validation
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
