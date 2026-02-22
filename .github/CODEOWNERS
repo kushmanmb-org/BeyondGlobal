@@ -1,0 +1,20 @@
+# CODEOWNERS file for BeyondGlobal repository
+# This file defines the ownership structure for the repository
+# Code owners are automatically requested for review when someone opens a pull request
+
+# Default ownership for all files
+* @Kushmanmb
+
+# Specific ownership for key directories and files
+/index.js @Kushmanmb
+/test.js @Kushmanmb
+/README.md @Kushmanmb
+/ETHERSCAN_API.md @Kushmanmb
+/package.json @Kushmanmb
+
+# Documentation ownership
+*.md @Kushmanmb
+
+# Configuration files
+/.github/ @Kushmanmb
+/.gitignore @Kushmanmb
