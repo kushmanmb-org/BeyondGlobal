@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MetaMask Smart Accounts Kit Demo - Interact with smart accounts and query blockchain data">
+  <title>MetaMask Smart Accounts Kit Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .section {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+    }
+
+    .section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      color: #495057;
+      margin-bottom: 15px;
+      font-size: 1.3em;
+      border-bottom: 2px solid #dee2e6;
+      padding-bottom: 10px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      background: #adb5bd;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #dee2e6;
+      border-radius: 6px;
+      font-size: 1em;
+      margin-bottom: 10px;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .status {
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    .status.connected {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.disconnected {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    pre {
+      background: #282c34;
+      color: #abb2bf;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 0.9em;
+      line-height: 1.5;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .input-group input {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    .footer {
+      background: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      color: #6c757d;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .footer a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.8s linear infinite;
+      margin-left: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+      }
+
+      .header h1 {
+        font-size: 1.5em;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .input-group {
+        flex-direction: column;
+      }
+
+      .input-group button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🦊 MetaMask Smart Accounts Kit</h1>
+      <p>Demo Application for Smart Account Integration</p>
+    </div>
+
+    <div class="content">
+      <!-- Wallet Connection Section -->
+      <div class="section">
+        <h2>1. Connect Wallet</h2>
+        <button id="connectBtn">Connect MetaMask</button>
+        <div id="accountDisplay" class="status disconnected">Not connected</div>
+      </div>
+
+      <!-- Network Selection Section -->
+      <div class="section">
+        <h2>2. Select Network</h2>
+        <select id="chainSelect">
+          <option value="eth">Ethereum Mainnet</option>
+          <option value="1">Chain ID: 1 (Mainnet)</option>
+          <option value="11155111">Chain ID: 11155111 (Sepolia Testnet)</option>
+          <option value="5">Chain ID: 5 (Goerli Testnet)</option>
+          <option value="137">Chain ID: 137 (Polygon)</option>
+        </select>
+        <div id="chainInfo" class="status info">Select a network to query blockchain data</div>
+      </div>
+
+      <!-- Smart Account Query Section -->
+      <div class="section">
+        <h2>3. Query Smart Account</h2>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="accountInput" 
+            placeholder="Enter Ethereum address (0x...)"
+            pattern="^0x[a-fA-F0-9]{40}$"
+          >
+          <button id="queryBtn">Query Account</button>
+        </div>
+        <div id="queryResults"></div>
+      </div>
+
+      <!-- Etherscan API Data Section -->
+      <div class="section">
+        <h2>4. Blockchain Data (Etherscan API)</h2>
+        <button id="etherscanBtn">Fetch Etherscan API Info</button>
+        <div id="etherscanData"></div>
+      </div>
+
+      <!-- Smart Accounts Kit Info -->
+      <div class="section">
+        <h2>5. About Smart Accounts Kit</h2>
+        <p style="line-height: 1.6; color: #495057;">
+          The MetaMask Smart Accounts Kit enables developers to integrate account abstraction 
+          features into their dApps. This demo showcases wallet connection, network selection, 
+          and blockchain data querying using the Etherscan API v2.
+        </p>
+        <p style="margin-top: 10px; color: #6c757d; font-size: 0.9em;">
+          <strong>Version:</strong> @metamask/smart-accounts-kit v0.3.0
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        MetaMask Smart Accounts Kit Demo | 
+        <a href="https://github.com/Kushmanmb/BeyondGlobal" target="_blank">GitHub Repository</a> | 
+        <a href="https://docs.metamask.io/" target="_blank">MetaMask Documentation</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
