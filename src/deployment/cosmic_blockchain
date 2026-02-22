@@ -1,0 +1,4 @@
+#!/bin/bash
+# Cosmic Blockchain executable for Linux/Mac
+echo "Cosmic Blockchain starting..."
+echo "Deployment complete."
