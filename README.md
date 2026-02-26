@@ -1,5 +1,11 @@
 # sturdy-funicular
 
+[![Owner](https://img.shields.io/badge/Owner-Kushmanmb-blue)](https://github.com/Kushmanmb)
+[![Maintainer](https://img.shields.io/badge/Maintainer-Kushmanmb-green)](https://github.com/Kushmanmb)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+[![Proof of Work](https://img.shields.io/badge/Proof_of_Work-Documented-brightgreen)](PROOF_OF_WORK.md)
+[![Proof of Stake](https://img.shields.io/badge/Proof_of_Stake-Established-purple)](PROOF_OF_STAKE.md)
+
 ## Advanced Git Commands Guide
 
 This guide covers advanced Git commands that are essential for effective version control management. Each command includes detailed explanations and practical examples.
