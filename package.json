@@ -1,9 +1,14 @@
 {
-  "name": "metamask-smart-accounts-kit-demo",
+  "name": "kairos-blockchain-platform",
   "version": "1.0.0",
+  "description": "Kairos Blockchain Platform with Ethereum smart contracts and MetaMask integration",
   "main": "index.js",
-  "repository": "https://github.com/Kushmanmb/sturdy-funicular",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kushmanmb/BeyondGlobal"
+  },
   "author": "Kushmanmb",
+  "license": "MIT",
   "license": "SEE LICENSE IN LICENSE",
   "name": "sturdy-funicular",
   "version": "1.0.0",
@@ -14,9 +19,31 @@
   "scripts": {
     "start": "node index.js",
     "query-etherscan": "node index.js",
-    "test": "node test.js"
+    "test": "node test.js",
+    "test:integration": "node test-integration.js",
+    "test:all": "npm test && npm run test:integration",
+    "test:contract": "node scripts/ethereum-deploy.js localhost",
+    "deploy:local": "node scripts/ethereum-deploy.js localhost",
+    "deploy:sepolia": "node scripts/ethereum-deploy.js sepolia",
+    "deploy:mainnet": "node scripts/ethereum-deploy.js mainnet",
+    "serve:frontend": "npx http-server frontend -p 8080 -c-1",
+    "blockchain:deploy": "cd cosmic_blockchain_deploy && node cosmic_blockchain.js"
   },
+  "keywords": [
+    "blockchain",
+    "ethereum",
+    "metamask",
+    "web3",
+    "smart-contracts",
+    "cryptocurrency",
+    "defi"
+  ],
   "dependencies": {
     "@metamask/smart-accounts-kit": "^0.3.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }

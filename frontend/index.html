@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos Blockchain Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .status-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .status-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .status-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌌 Kairos Blockchain</h1>
+        <p class="subtitle">Cosmic Blockchain Platform with MetaMask Integration</p>
+
+        <!-- Alert Messages -->
+        <div id="alertBox" class="alert"></div>
+
+        <!-- Connection Status -->
+        <div class="status-box">
+            <h3>🔗 Connection Status</h3>
+            <div class="status-item">
+                <span class="status-label">MetaMask:</span>
+                <span class="status-value" id="metamaskStatus">Not Connected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Account:</span>
+                <span class="status-value" id="accountAddress">-</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Network:</span>
+                <span class="status-value" id="networkId">-</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Balance:</span>
+                <span class="status-value" id="accountBalance">-</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn" id="connectBtn" onclick="connectWallet()">
+                Connect MetaMask
+            </button>
+            <button class="btn" id="refreshBtn" onclick="refreshData()" disabled>
+                Refresh Data
+            </button>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+
+        <!-- Features -->
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🔐 Secure</h4>
+                <p>Built with security-first principles and smart contract auditing</p>
+            </div>
+            <div class="feature-card">
+                <h4>⚡ Fast</h4>
+                <p>Optimized for speed with efficient transaction processing</p>
+            </div>
+            <div class="feature-card">
+                <h4>🌐 Decentralized</h4>
+                <p>True decentralization with no single point of failure</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Kairos Blockchain Platform v1.0.0</p>
+            <p>Powered by Ethereum & MetaMask</p>
+        </div>
+    </div>
+
+    <!-- Include MetaMask Integration -->
+    <script src="metamask-integration.js"></script>
+    
+    <script>
+        // Initialize Web3 Integration
+        let web3Integration = null;
+        let isConnected = false;
+
+        // Show alert message
+        function showAlert(message, type = 'info') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert alert-${type} show`;
+            alertBox.textContent = message;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Show/hide loading indicator
+        function setLoading(loading) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (loading) {
+                indicator.classList.add('show');
+            } else {
+                indicator.classList.remove('show');
+            }
+        }
+
+        // Update UI with connection status
+        function updateUI(connected, data = {}) {
+            isConnected = connected;
+            
+            document.getElementById('metamaskStatus').textContent = 
+                connected ? '✓ Connected' : '✗ Not Connected';
+            
+            document.getElementById('accountAddress').textContent = 
+                data.account ? `${data.account.substring(0, 6)}...${data.account.substring(38)}` : '-';
+            
+            document.getElementById('networkId').textContent = 
+                data.chainId || '-';
+            
+            document.getElementById('accountBalance').textContent = 
+                data.balance ? `${data.balance} ETH` : '-';
+            
+            document.getElementById('connectBtn').disabled = connected;
+            document.getElementById('refreshBtn').disabled = !connected;
+        }
+
+        // Connect to MetaMask
+        async function connectWallet() {
+            try {
+                setLoading(true);
+                
+                // Initialize Web3 if not already done
+                if (!web3Integration) {
+                    web3Integration = new KairosWeb3Integration();
+                    const initialized = await web3Integration.initialize();
+                    
+                    if (!initialized) {
+                        showAlert('MetaMask not detected. Please install MetaMask extension.', 'error');
+                        setLoading(false);
+                        return;
+                    }
+                }
+
+                // Connect to wallet
+                const accounts = await web3Integration.connect();
+                
+                if (accounts.length === 0) {
+                    showAlert('No accounts found. Please unlock MetaMask.', 'error');
+                    setLoading(false);
+                    return;
+                }
+
+                // Get account balance
+                const balance = await web3Integration.getBalance(accounts[0]);
+
+                // Update UI
+                updateUI(true, {
+                    account: accounts[0],
+                    chainId: web3Integration.chainId,
+                    balance: balance
+                });
+
+                showAlert('Successfully connected to MetaMask!', 'success');
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                showAlert(`Connection failed: ${error.message}`, 'error');
+                updateUI(false);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Refresh account data
+        async function refreshData() {
+            if (!isConnected || !web3Integration) {
+                showAlert('Please connect to MetaMask first.', 'error');
+                return;
+            }
+
+            try {
+                setLoading(true);
+                
+                const balance = await web3Integration.getBalance(web3Integration.accounts[0]);
+                
+                updateUI(true, {
+                    account: web3Integration.accounts[0],
+                    chainId: web3Integration.chainId,
+                    balance: balance
+                });
+
+                showAlert('Data refreshed successfully!', 'success');
+                
+            } catch (error) {
+                console.error('Refresh error:', error);
+                showAlert(`Refresh failed: ${error.message}`, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            console.log('Kairos Blockchain Platform initialized');
+            showAlert('Welcome to Kairos Blockchain Platform! Connect your wallet to get started.', 'info');
+        });
+    </script>
+</body>
+</html>
