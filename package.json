@@ -1,10 +1,4 @@
 {
-  "name": "metamask-smart-accounts-kit-demo",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/Kushmanmb/sturdy-funicular",
-  "author": "Kushmanmb",
-  "license": "SEE LICENSE IN LICENSE",
   "name": "sturdy-funicular",
   "version": "1.0.0",
   "main": "index.js",
@@ -14,9 +8,11 @@
   "scripts": {
     "start": "node index.js",
     "query-etherscan": "node index.js",
+    "chat": "node github-ai-chat.js",
     "test": "node test.js"
   },
   "dependencies": {
-    "@metamask/smart-accounts-kit": "^0.3.0"
+    "@metamask/smart-accounts-kit": "^0.3.0",
+    "openai": "^6.33.0"
   }
 }
