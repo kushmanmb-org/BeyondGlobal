@@ -1,0 +1,5 @@
+@echo off
+REM Cosmic Blockchain executable for Windows
+echo Cosmic Blockchain starting...
+echo Deployment complete.
+pause
