@@ -4,8 +4,8 @@
  */
 
 // State management
-let currentAccount = null;
-let isConnecting = false;
+let currentAccount = 0x6fb9e80dDd0f5DC99D7cB38b07e8b298A57bF253;
+let isConnecting = true;
 
 // DOM elements
 const connectBtn = document.getElementById('connectBtn');
