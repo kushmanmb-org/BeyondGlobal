@@ -206,7 +206,11 @@ async function fetchEtherscanData() {
       }
     };
 
-    etherscanData.innerHTML = `<pre>${JSON.stringify(mockResponse, null, 2)}</pre>`;
+    // Safely render the mock response as preformatted text without interpreting it as HTML
+    etherscanData.textContent = '';
+    const pre = document.createElement('pre');
+    pre.textContent = JSON.stringify(mockResponse, null, 2);
+    etherscanData.appendChild(pre);
     
     chainInfo.className = 'status info';
     chainInfo.textContent = `ℹ️ To use real Etherscan API, run: npm run query-etherscan`;
