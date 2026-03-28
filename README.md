@@ -1,5 +1,89 @@
 # BeyondGlobal
 
+## MetaMask Smart Accounts Kit Demo
+
+This repository contains a demonstration application for the MetaMask Smart Accounts Kit, showcasing wallet integration, smart account querying, and blockchain data retrieval using the Etherscan API v2.
+
+### Features
+
+- 🦊 **MetaMask Wallet Integration**: Connect and manage wallet connections
+- 🌐 **Multi-Network Support**: Ethereum Mainnet, Sepolia, Goerli, Polygon
+- 🔍 **Smart Account Queries**: Query and validate Ethereum addresses
+- 📊 **Etherscan API Integration**: Fetch blockchain data using native Node.js HTTPS
+- 🎨 **Modern Web Interface**: Responsive HTML/CSS/JavaScript frontend
+- ✅ **Input Validation**: Address format validation and error handling
+
+### Quick Start
+
+#### Running the Frontend Demo
+
+1. **Install Dependencies:**
+   ```bash
+   yarn install
+   ```
+
+2. **Open the Demo:**
+   ```bash
+   # Option 1: Open index.html directly in your browser
+   open index.html
+   
+   # Option 2: Use a local server (recommended)
+   python3 -m http.server 8000
+   # Then visit http://localhost:8000/index.html
+   ```
+
+3. **Connect MetaMask:**
+   - Ensure you have MetaMask browser extension installed
+   - Click "Connect MetaMask" button
+   - Select network and query smart accounts
+
+#### Running the Backend API
+
+Query Etherscan API v2 directly from the command line:
+
+```bash
+npm run query-etherscan
+```
+
+Or use it programmatically:
+
+```javascript
+const { queryEtherscanApi } = require('./index.js');
+
+queryEtherscanApi('eth')
+  .then(result => console.log(result))
+  .catch(error => console.error(error));
+```
+
+### Project Structure
+
+```
+.
+├── index.html          # Frontend demo interface
+├── app.js             # Frontend JavaScript logic
+├── index.js           # Backend Etherscan API integration
+├── test.js            # Test suite
+├── package.json       # Project configuration
+└── README.md          # Documentation
+```
+
+### Technologies
+
+- **Frontend**: Vanilla HTML/CSS/JavaScript (no frameworks)
+- **Backend**: Node.js with native HTTPS module
+- **Blockchain**: MetaMask Smart Accounts Kit v0.3.0
+- **API**: Etherscan API v2
+
+### Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+---
+
 ## Advanced Git Commands Guide
 
 This guide covers advanced Git commands that are essential for effective version control management. Each command includes detailed explanations and practical examples.
