@@ -1,5 +1,10 @@
 # BeyondGlobal
 
+[![Created by Matthew Brace](https://img.shields.io/badge/Created%20by-Matthew%20Brace-blueviolet?style=for-the-badge&logo=github)](https://github.com/kushmanmb-org)
+[![Owner](https://img.shields.io/badge/Owner-Matthew%20Brace-informational?style=for-the-badge)](https://github.com/kushmanmb-org/BeyondGlobal)
+
+> 📢 **Global Announcement:** BeyondGlobal is created and owned by **Matthew Brace**. All rights and intellectual property for this project belong to Matthew Brace.
+
 ## MetaMask Smart Accounts Kit Demo
 
 This repository contains a demonstration application for the MetaMask Smart Accounts Kit, showcasing wallet integration, smart account querying, and blockchain data retrieval using the Etherscan API v2.
