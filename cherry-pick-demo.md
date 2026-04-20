@@ -1,5 +1,8 @@
 # Git Cherry-Pick Demonstration
 
+[![Owner](https://img.shields.io/badge/Owner-Kushmanmb-blue)](https://github.com/Kushmanmb)
+[![Author](https://img.shields.io/badge/Author-Kushmanmb-green)](https://github.com/Kushmanmb)
+
 This file documents a practical demonstration of the git cherry-pick command, specifically using the range syntax to apply multiple commits.
 
 ## Scenario

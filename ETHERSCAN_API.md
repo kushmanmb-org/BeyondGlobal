@@ -1,5 +1,8 @@
 # Etherscan API v2 Integration
 
+[![Owner](https://img.shields.io/badge/Owner-Kushmanmb-blue)](https://github.com/Kushmanmb)
+[![Author](https://img.shields.io/badge/Author-Kushmanmb-green)](https://github.com/Kushmanmb)
+
 This module provides integration with Etherscan's API v2 for querying blockchain data related to smart accounts.
 
 ## Overview
